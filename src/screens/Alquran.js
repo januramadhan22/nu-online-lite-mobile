@@ -157,7 +157,7 @@ const Alquran = ({navigation}) => {
               alignItems: 'center',
             }}>
             <Image
-              source={require('../assets/book_grey_icon.png')}
+              source={require('../assets/quran_grey_icon.png')}
               style={{width: 72, height: 72}}
             />
           </View>

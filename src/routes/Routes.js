@@ -12,6 +12,7 @@ import Settings from '../screens/Settings';
 import Alquran from '../screens/Alquran';
 import JadwalShalat from '../screens/JadwalShalat';
 import Wirid from '../screens/Wirid';
+import DoaTahlil from '../screens/DoaTahlil';
 import BottomNavigator from '../components/tab/BottomNavigator';
 import {detailStore} from '../utils/api/zustand/detailStore';
 
@@ -122,6 +123,27 @@ const Routes = () => {
           headerBlurEffect: 'light',
           headerStyle: {backgroundColor: '#009788'},
           headerTitle: 'Doa Harian',
+          headerTitleStyle: {color: '#fff'},
+          headerBackButtonMenuEnabled: true,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigate.goBack()}>
+              <Ionicons
+                name="arrow-back-outline"
+                size={24}
+                color={'#fff'}
+                style={{marginRight: 18}}
+              />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="DoaTahlil"
+        component={DoaTahlil}
+        options={{
+          headerBlurEffect: 'light',
+          headerStyle: {backgroundColor: '#009788'},
+          headerTitle: 'Doa Tahlil',
           headerTitleStyle: {color: '#fff'},
           headerBackButtonMenuEnabled: true,
           headerLeft: () => (

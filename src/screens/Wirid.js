@@ -60,7 +60,7 @@ const Wirid = () => {
               letterSpacing: 0.5,
             }}
             placeholderTextColor={'grey'}
-            placeholder="Cari Nama Surah"
+            placeholder="Cari Nama Doa"
             value={inputText}
             onChangeText={setInputText}
           />
