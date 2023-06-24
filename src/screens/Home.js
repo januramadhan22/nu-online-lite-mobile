@@ -126,13 +126,14 @@ const Home = ({navigation}) => {
         style={{
           width: '65%',
           flexDirection: 'row',
+          flexWrap: 'wrap',
           justifyContent: 'center',
-          gap: 12,
+          gap: 32,
           marginVertical: 10,
         }}>
         <CustomButton
           label={"Al-Qur'an"}
-          icon={require('../assets/book_icon.png')}
+          icon={require('../assets/quran_icon.png')}
           onNavigate={() => navigation.navigate('Alquran')}
         />
         <CustomButton
@@ -144,6 +145,11 @@ const Home = ({navigation}) => {
           label={'Jadwal Shalat'}
           icon={require('../assets/clock_icon.png')}
           onNavigate={() => navigation.navigate('JadwalShalat')}
+        />
+        <CustomButton
+          label={'Doa Tahlil'}
+          icon={require('../assets/praying_icon.png')}
+          onNavigate={() => navigation.navigate('DoaTahlil')}
         />
       </View>
 
