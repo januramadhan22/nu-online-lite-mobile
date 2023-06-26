@@ -3,12 +3,15 @@ import {StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 
 import Routes from './routes/Routes';
+import {ThemeProvider} from './utils/context/themeContext';
 
 function App() {
   return (
-    <NavigationContainer>
-      <Routes />
-    </NavigationContainer>
+    <ThemeProvider>
+      <NavigationContainer>
+        <Routes />
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }
 

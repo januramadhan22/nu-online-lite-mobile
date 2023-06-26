@@ -6,12 +6,16 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import {doaTahlil} from '../utils/api/doaTahlil';
+import ThemeContext from '../utils/context/themeContext';
 
 const DoaTahlil = () => {
+  const {theme} = useContext(ThemeContext);
+
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+    <SafeAreaView
+      style={{flex: 1, backgroundColor: theme === 'light' ? '#fff' : '#222'}}>
       <ScrollView>
         <View
           style={{
@@ -27,10 +31,16 @@ const DoaTahlil = () => {
               style={{
                 padding: 24,
                 borderBottomWidth: 0.2,
-                borderBottomColor: '#2225',
+                borderBottomColor: theme === 'light' ? '#0005' : '#fff',
                 gap: 16,
               }}>
-              <Text style={{fontSize: 20, color: '#222'}}>{doa.arab}</Text>
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: theme === 'light' ? '#222' : '#fff',
+                }}>
+                {doa.arab}
+              </Text>
               <Text style={{fontSize: 14, color: '#009053'}}>{doa.id}</Text>
             </View>
           ))}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -15,13 +15,17 @@ import Wirid from '../screens/Wirid';
 import DoaTahlil from '../screens/DoaTahlil';
 import BottomNavigator from '../components/tab/BottomNavigator';
 import {detailStore} from '../utils/api/zustand/detailStore';
+import ThemeContext from '../utils/context/themeContext';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const MainApp = () => {
+  const {theme} = useContext(ThemeContext);
+
   return (
-    <Tab.Navigator tabBar={props => <BottomNavigator {...props} />}>
+    <Tab.Navigator
+      tabBar={props => <BottomNavigator {...props} theme={theme} />}>
       <Tab.Screen
         name="Beranda"
         component={Home}

@@ -1,16 +1,34 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+// import ThemeContext from '../../utils/context/themeContext';
 
-const BottomNavigator = ({state, descriptors, navigation}) => {
+const BottomNavigator = ({state, descriptors, navigation, theme}) => {
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
   if (focusedOptions.tabBarVisible === false) {
     return null;
   }
+
+  const styles = StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      backgroundColor: theme !== 'light' ? '#222' : '#fff',
+      justifyContent: 'space-between',
+      paddingHorizontal: 55,
+      paddingVertical: 14,
+      // shadowColor: '#000',
+      // shadowOffset: {width: 0, height: 10},
+      // shadowRadius: 4,
+      // shadowOpacity: 100,
+      elevation: 10,
+      borderTopWidth: 0.2,
+      borderTopColor: '#0002',
+    },
+  });
 
   return (
     <View style={styles.container}>
@@ -70,7 +88,6 @@ const BottomNavigator = ({state, descriptors, navigation}) => {
             testID={options.tabBarTestID}
             onPress={() => {
               onPress();
-              console.log('test');
             }}
             onLongPress={onLongPress}
             style={{alignItems: 'center'}}>
@@ -92,19 +109,4 @@ const BottomNavigator = ({state, descriptors, navigation}) => {
 
 export default BottomNavigator;
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    justifyContent: 'space-between',
-    paddingHorizontal: 55,
-    paddingVertical: 14,
-    // shadowColor: '#000',
-    // shadowOffset: {width: 0, height: 10},
-    // shadowRadius: 4,
-    // shadowOpacity: 100,
-    elevation: 10,
-    borderTopWidth: 0.2,
-    borderTopColor: '#0002',
-  },
-});
+// const {theme} = useContext(ThemeContext);
