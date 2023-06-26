@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -15,6 +15,7 @@ import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {detailStore} from '../utils/api/zustand/detailStore';
+import ThemeContext from '../utils/context/themeContext';
 
 const Details = ({route}) => {
   const {params} = route;
@@ -31,6 +32,7 @@ const Details = ({route}) => {
   const [currentSound, setCurrentSound] = useState(0);
 
   const {title} = detailStore(state => state);
+  const {theme} = useContext(ThemeContext);
 
   const windowHeight = Dimensions.get('window').height;
 
@@ -51,27 +53,6 @@ const Details = ({route}) => {
       })
       .catch(error => console.log(error))
       .finally(() => setIsLoading(false));
-  };
-
-  const handlePlaySound = link => {
-    const sound = new Sound(link, null, error => {
-      if (error) {
-        console.log(error);
-      }
-      setSound(sound);
-      setDuration(sound.getDuration());
-
-      sound.play(success => {
-        if (success) {
-          console.log('Sound played successfully');
-        } else {
-          console.log('Sound playback failed');
-        }
-
-        setCurrentPosition(0);
-        sound.setCurrentTime(0);
-      });
-    });
   };
 
   const handleActionSound = () => {
@@ -129,7 +110,7 @@ const Details = ({route}) => {
           alignItems: 'center',
           width: '100%',
           minHeight: 60,
-          backgroundColor: '#f9f9f9',
+          backgroundColor: theme === 'light' ? '#fff' : '#222',
           elevation: 1,
           ...Platform.select({
             android: {
@@ -139,8 +120,16 @@ const Details = ({route}) => {
           }),
         }}>
         <View style={{flexDirection: 'column', gap: 4}}>
-          <Text style={{fontSize: 14, color: '#222'}}>Putar surah</Text>
-          <Text style={{fontSize: 18, fontWeight: 500, color: '#222'}}>
+          <Text
+            style={{fontSize: 14, color: theme === 'light' ? '#222' : '#fff'}}>
+            Putar surah
+          </Text>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 500,
+              color: theme === 'light' ? '#222' : '#fff',
+            }}>
             {title} {currentSound + 1}/{soundsArray.length}
           </Text>
         </View>
@@ -148,7 +137,12 @@ const Details = ({route}) => {
           <TouchableOpacity onPress={handleActionSound}>
             <View
               style={{
-                backgroundColor: !isPlay ? '#c7f9cc' : 'transparent',
+                backgroundColor:
+                  !isPlay && theme === 'light'
+                    ? '#c7f9cc'
+                    : !isPlay && theme !== 'light'
+                    ? '#009788'
+                    : 'transparent',
                 paddingVertical: 8,
                 paddingHorizontal: 16,
                 borderRadius: 100,
@@ -158,10 +152,29 @@ const Details = ({route}) => {
               }}>
               <Ionicons
                 name={!isPlay ? 'play' : 'stop'}
-                color={!isPlay ? '#009788' : '#222'}
+                color={
+                  !isPlay && theme === 'light'
+                    ? '#009788'
+                    : !isPlay && theme !== 'light'
+                    ? '#c7f9cc'
+                    : isPlay && theme === 'light'
+                    ? '#222'
+                    : isPlay && theme !== 'light' && '#c7f9cc'
+                }
                 size={18}
               />
-              <Text style={{fontSize: 16, color: !isPlay ? '#009788' : '#222'}}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color:
+                    !isPlay && theme === 'light'
+                      ? '#009788'
+                      : !isPlay && theme !== 'light'
+                      ? '#c7f9cc'
+                      : isPlay && theme === 'light'
+                      ? '#222'
+                      : isPlay && theme !== 'light' && '#c7f9cc',
+                }}>
                 {!isPlay ? 'Putar' : 'Berhenti'}
               </Text>
             </View>
@@ -173,7 +186,7 @@ const Details = ({route}) => {
       <View
         style={{
           position: 'relative',
-          backgroundColor: '#fff',
+          backgroundColor: theme === 'light' ? '#fff' : '#222',
           height: windowHeight,
         }}>
         {isLoading ? (
@@ -198,7 +211,7 @@ const Details = ({route}) => {
                 borderTopWidth: 1,
                 borderColor: '#57cc99',
                 marginTop: 4,
-                backgroundColor: '#c7f9cc',
+                backgroundColor: theme === 'light' ? '#c7f9cc' : '#009788',
                 // shadowColor: '#000',
                 elevation: 10,
               }}>
@@ -207,7 +220,7 @@ const Details = ({route}) => {
                   width: '33.3%',
                   textAlign: 'left',
                   fontSize: 14,
-                  color: '#000',
+                  color: theme === 'light' ? '#000' : '#fff',
                   paddingLeft: 24,
                 }}>
                 {details?.revelation?.id}
@@ -216,14 +229,14 @@ const Details = ({route}) => {
               <View
                 style={{
                   width: '33.3%',
-                  backgroundColor: '#fff',
+                  backgroundColor: theme === 'light' ? '#fff' : '#222',
                   borderRadius: 32,
                 }}>
                 <Text
                   style={{
                     textAlign: 'center',
                     fontSize: 28,
-                    color: '#000',
+                    color: theme === 'light' ? '#000' : '#fff',
                   }}>
                   {details?.name?.short}
                 </Text>
@@ -234,7 +247,7 @@ const Details = ({route}) => {
                   width: '33.3%',
                   textAlign: 'right',
                   fontSize: 14,
-                  color: '#000',
+                  color: theme === 'light' ? '#000' : '#fff',
                   paddingRight: 24,
                 }}>
                 {details?.numberOfVerses} ayat
@@ -250,14 +263,14 @@ const Details = ({route}) => {
                     style={{
                       paddingVertical: 20,
                       borderBottomWidth: 0.2,
-                      borderBottomColor: '#0005',
+                      borderBottomColor: theme === 'light' ? '#0005' : '#fff',
                       gap: 2,
                     }}>
                     <Text
                       style={{
                         fontSize: 24,
                         textAlign: 'right',
-                        color: '#000',
+                        color: theme === 'light' ? '#000' : '#fff',
                         paddingHorizontal: 24,
                       }}>
                       {details?.preBismillah?.text?.arab}
@@ -266,7 +279,7 @@ const Details = ({route}) => {
                       style={{
                         textAlign: 'left',
                         paddingHorizontal: 24,
-                        color: '#009053',
+                        color: theme === 'light' ? '#009053' : '#009788',
                       }}>
                       {details?.preBismillah?.text?.transliteration?.en}
                     </Text>
@@ -286,14 +299,14 @@ const Details = ({route}) => {
                       style={{
                         paddingVertical: 20,
                         borderBottomWidth: 0.2,
-                        borderBottomColor: '#0005',
+                        borderBottomColor: theme === 'light' ? '#0005' : '#fff',
                         gap: 2,
                       }}>
                       <Text
                         style={{
                           fontSize: 24,
                           textAlign: 'right',
-                          color: '#000',
+                          color: theme === 'light' ? '#000' : '#fff',
                           paddingHorizontal: 24,
                         }}>
                         {item.text.arab}{' '}
@@ -301,7 +314,11 @@ const Details = ({route}) => {
                           ({item.number.inSurah})
                         </Text>
                       </Text>
-                      <Text style={{paddingHorizontal: 24, color: '#009053'}}>
+                      <Text
+                        style={{
+                          paddingHorizontal: 24,
+                          color: theme === 'light' ? '#009053' : '#009788',
+                        }}>
                         {item.text.transliteration.en}
                       </Text>
                     </View>
@@ -328,7 +345,7 @@ const Details = ({route}) => {
             }}>
             <View
               style={{
-                backgroundColor: '#f3f3f3',
+                backgroundColor: theme === 'light' ? '#f3f3f3' : '#222',
                 width: '90%',
                 maxHeight: '80%',
                 alignItems: 'center',
@@ -357,12 +374,13 @@ const Details = ({route}) => {
                     fontSize: 16,
                     fontWeight: 400,
                     textAlign: 'justify',
-                    color: '#222',
+                    color: theme === 'light' ? '#222' : '#fff',
                   }}>
                   {moreDetails?.tafsir?.id?.long}
                 </Text>
               </ScrollView>
               <TouchableOpacity
+                onPress={() => setIsOpen(false)}
                 style={{
                   width: 100,
                   justifyContent: 'center',
@@ -371,11 +389,7 @@ const Details = ({route}) => {
                   padding: 8,
                   borderRadius: 4,
                 }}>
-                <Text
-                  onPress={() => setIsOpen(false)}
-                  style={{color: '#fff', fontWeight: 500}}>
-                  Kembali
-                </Text>
+                <Text style={{color: '#fff', fontWeight: 500}}>Kembali</Text>
               </TouchableOpacity>
             </View>
           </View>

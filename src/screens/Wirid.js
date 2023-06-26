@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -14,12 +14,15 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {doaHarian} from '../utils/api/doaHarian';
+import ThemeContext from '../utils/context/themeContext';
 
 const Wirid = () => {
   const [inputText, setInputText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDoa, setSelectedDoa] = useState(null);
   const [searchedDoa, setSearchedDoa] = useState(doaHarian);
+
+  const {theme} = useContext(ThemeContext);
 
   const handleSearchDoa = () => {
     if (inputText !== '') {
@@ -34,7 +37,11 @@ const Wirid = () => {
 
   return (
     <SafeAreaView
-      style={{flex: 1, paddingHorizontal: 14, backgroundColor: '#fff'}}>
+      style={{
+        flex: 1,
+        paddingHorizontal: 14,
+        backgroundColor: theme === 'light' ? '#fff' : '#222',
+      }}>
       {/* Search Form */}
       <View>
         <View
@@ -45,7 +52,7 @@ const Wirid = () => {
             flexDirection: 'row',
             alignItems: 'center',
             gap: 10,
-            backgroundColor: '#f3f3f3',
+            backgroundColor: theme === 'light' ? '#f3f3f3' : '#2F312F',
             borderRadius: 10,
             overflow: 'hidden',
           }}>
@@ -55,7 +62,7 @@ const Wirid = () => {
           <TextInput
             style={{
               flex: 1,
-              color: '#000',
+              color: theme === 'light' ? '#000' : '#fff',
               fontSize: 16,
               letterSpacing: 0.5,
             }}
@@ -98,7 +105,7 @@ const Wirid = () => {
                   borderRadius: 12,
                   // borderWidth: 1,
                   elevation: 3,
-                  backgroundColor: '#fff',
+                  backgroundColor: theme === 'light' ? '#fff' : '#2F312F',
                   overflow: 'hidden',
                 }}>
                 <Text
@@ -109,8 +116,8 @@ const Wirid = () => {
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: '#c7f9cc',
-                    color: '#009788',
+                    backgroundColor: theme === 'light' ? '#c7f9cc' : '#009788',
+                    color: theme === 'light' ? '#009788' : '#c7f9cc',
                     textAlign: 'center',
                     fontSize: 18,
                     fontWeight: 600,
@@ -127,7 +134,7 @@ const Wirid = () => {
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: '#222',
+                    color: theme === 'light' ? '#222' : '#fff',
                     fontSize: 18,
                     fontWeight: 400,
                     overflow: 'hidden',
@@ -183,7 +190,7 @@ const Wirid = () => {
           }}>
           <View
             style={{
-              backgroundColor: '#f3f3f3',
+              backgroundColor: theme === 'light' ? '#f3f3f3' : '#2F312F',
               width: '90%',
               maxHeight: '80%',
               alignItems: 'center',
@@ -204,13 +211,13 @@ const Wirid = () => {
               }}>
               {selectedDoa?.doa}
             </Text>
-            <View style={{alignItems: 'center', gap: 14}}>
+            <ScrollView style={{gap: 14}}>
               <Text
                 style={{
                   fontSize: 24,
                   fontWeight: 600,
                   textAlign: 'center',
-                  color: '#222',
+                  color: theme === 'light' ? '#222' : '#fff',
                 }}>
                 {selectedDoa?.arab}
               </Text>
@@ -219,11 +226,11 @@ const Wirid = () => {
                   fontSize: 16,
                   fontWeight: 500,
                   textAlign: 'center',
-                  color: '#222',
+                  color: theme === 'light' ? '#222' : '#fff',
                 }}>
                 {selectedDoa?.id}
               </Text>
-            </View>
+            </ScrollView>
             <TouchableOpacity
               style={{
                 width: 100,

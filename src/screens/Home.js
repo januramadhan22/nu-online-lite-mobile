@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -6,17 +6,18 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
 import {request, PERMISSIONS} from 'react-native-permissions';
-import moment from 'moment-hijri';
+import Geolocation from 'react-native-geolocation-service';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import moment from 'moment-hijri';
 
 import CustomButton from '../components/buttons/CustomButton';
 import {locationStore} from '../utils/api/zustand/locationStore';
-import axios from 'axios';
+import ThemeContext from '../utils/context/themeContext';
 
 const Home = ({navigation}) => {
   const [date, setDate] = useState(new Date());
+  const {theme} = useContext(ThemeContext);
 
   const {
     isLoading,
@@ -34,6 +35,33 @@ const Home = ({navigation}) => {
     getSalatSchedule,
     getOncomingTime,
   } = locationStore(state => state);
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 10,
+      backgroundColor: theme === 'light' ? '#fff' : '#222',
+    },
+    searchBar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: 'lightgray',
+      borderRadius: 5,
+      paddingVertical: 8,
+      paddingHorizontal: 12,
+    },
+    input: {
+      flex: 1,
+      marginRight: 8,
+      fontSize: 16,
+    },
+    icon: {
+      marginLeft: 8,
+    },
+  });
 
   useEffect(() => {
     getLocationPermission(request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION));
@@ -67,8 +95,12 @@ const Home = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text style={{fontSize: 36, color: '#009788'}}>
-        nu<Text style={{color: '#222'}}>online</Text>
-        <Text style={{color: '#222', fontSize: 24}}>lite</Text>
+        nu
+        <Text style={{color: theme === 'light' ? '#222' : '#fff'}}>online</Text>
+        <Text
+          style={{color: theme === 'light' ? '#222' : '#fff', fontSize: 24}}>
+          lite
+        </Text>
       </Text>
 
       {/* Time and Place Detail */}
@@ -80,7 +112,12 @@ const Home = ({navigation}) => {
         <View style={{marginVertical: 10}}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
             <Ionicons name="location" color={'red'} size={18} />
-            <Text style={{fontSize: 18, textAlign: 'center', color: '#222'}}>
+            <Text
+              style={{
+                fontSize: 18,
+                textAlign: 'center',
+                color: theme === 'light' ? '#222' : '#fff',
+              }}>
               {`${city}, ${state}`}
             </Text>
             <TouchableOpacity
@@ -102,7 +139,7 @@ const Home = ({navigation}) => {
                 textAlign: 'center',
                 fontSize: 28,
                 fontWeight: 600,
-                color: '#222',
+                color: theme === 'light' ? '#222' : '#fff',
               }}>
               {oncomingTime}{' '}
               <Text style={{fontSize: 20, fontWeight: 600}}>
@@ -110,7 +147,12 @@ const Home = ({navigation}) => {
               </Text>
             </Text>
           </View>
-          <Text style={{fontSize: 16, textAlign: 'center', color: '#222'}}>
+          <Text
+            style={{
+              fontSize: 16,
+              textAlign: 'center',
+              color: theme === 'light' ? '#222' : '#fff',
+            }}>
             {date.toLocaleDateString('id', {
               day: '2-digit',
               month: 'long',
@@ -159,30 +201,3 @@ const Home = ({navigation}) => {
 };
 
 export default Home;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-    backgroundColor: '#fff',
-  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'lightgray',
-    borderRadius: 5,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  input: {
-    flex: 1,
-    marginRight: 8,
-    fontSize: 16,
-  },
-  icon: {
-    marginLeft: 8,
-  },
-});

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -15,6 +15,7 @@ import axios from 'axios';
 
 import {BASE_URL} from '../utils/api/url';
 import {detailStore} from '../utils/api/zustand/detailStore';
+import ThemeContext from '../utils/context/themeContext';
 
 const Alquran = ({navigation}) => {
   const [surah, setSurah] = useState([]);
@@ -24,6 +25,30 @@ const Alquran = ({navigation}) => {
   const [inputText, setInputText] = useState('');
 
   const {changeTitle} = detailStore(state => state);
+  const {theme} = useContext(ThemeContext);
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingHorizontal: 14,
+      backgroundColor: theme === 'light' ? '#fff' : '#222',
+    },
+    wrapperSurah: {
+      marginVertical: 4,
+      paddingVertical: 12,
+      flex: 1,
+      flexDirection: 'row',
+      gap: 8,
+      borderBottomWidth: 0.2,
+      borderBottomColor: theme === 'light' ? '#0005' : '#fff',
+    },
+    wrapperSurahName: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+  });
 
   const handleGetSurah = () => {
     setIsLoading(true);
@@ -69,7 +94,7 @@ const Alquran = ({navigation}) => {
             flexDirection: 'row',
             alignItems: 'center',
             gap: 10,
-            backgroundColor: '#f3f3f3',
+            backgroundColor: theme === 'light' ? '#f3f3f3' : '#2F312F',
             borderRadius: 10,
             overflow: 'hidden',
           }}>
@@ -79,7 +104,7 @@ const Alquran = ({navigation}) => {
           <TextInput
             style={{
               flex: 1,
-              color: '#000',
+              color: theme === 'light' ? '#000' : '#fff',
               fontSize: 16,
               letterSpacing: 0.5,
             }}
@@ -117,20 +142,36 @@ const Alquran = ({navigation}) => {
                 changeTitle(item.name.transliteration.id);
               }}>
               <View style={styles.wrapperSurah}>
-                <Text style={{fontSize: 16, color: '#000'}}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: theme === 'light' ? '#000' : '#fff',
+                  }}>
                   {item.number}.
                 </Text>
                 <View style={styles.wrapperSurahName}>
                   <View>
-                    <Text style={{fontSize: 16, color: '#000'}}>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color: theme === 'light' ? '#000' : '#fff',
+                      }}>
                       {item.name.transliteration.id}
                     </Text>
-                    <Text style={{fontSize: 12, color: 'grey'}}>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: theme === 'light' ? 'grey' : '#009788',
+                      }}>
                       {item?.revelation?.id}: {item?.numberOfVerses}
                     </Text>
                   </View>
                   <View>
-                    <Text style={{fontSize: 24, color: '#000'}}>
+                    <Text
+                      style={{
+                        fontSize: 24,
+                        color: theme === 'light' ? '#000' : '#fff',
+                      }}>
                       {item.name.short}
                     </Text>
                   </View>
@@ -171,22 +212,3 @@ const Alquran = ({navigation}) => {
 };
 
 export default Alquran;
-
-const styles = StyleSheet.create({
-  container: {flex: 1, paddingHorizontal: 14, backgroundColor: '#fff'},
-  wrapperSurah: {
-    marginVertical: 4,
-    paddingVertical: 12,
-    flex: 1,
-    flexDirection: 'row',
-    gap: 8,
-    borderBottomWidth: 0.2,
-    borderBottomColor: '#0005',
-  },
-  wrapperSurahName: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-});

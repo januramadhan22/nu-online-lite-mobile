@@ -1,5 +1,5 @@
 import moment from 'moment-hijri';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -13,6 +13,7 @@ import {request, PERMISSIONS} from 'react-native-permissions';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {locationStore} from '../utils/api/zustand/locationStore';
+import ThemeContext from '../utils/context/themeContext';
 
 const JadwalShalat = () => {
   const [date, setDate] = useState(new Date());
@@ -39,119 +40,7 @@ const JadwalShalat = () => {
     getOncomingTime,
   } = locationStore(state => state);
 
-  // const getLocationPermission = async () => {
-  //   try {
-  //     const status = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-  //     setLocationPermission(status);
-  //   } catch (error) {
-  //     console.log('Not allowed permission', error);
-  //   }
-  // };
-
-  // const getUserLocation = () => {
-  //   Geolocation.getCurrentPosition(
-  //     position => {
-  //       const {latitude, longitude} = position.coords;
-  //       setUserLocation({latitude: latitude, longitude: longitude});
-
-  //       convertGeocode(latitude, longitude);
-  //     },
-  //     error => {
-  //       console.log('error get position', error);
-  //     },
-  //     {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-  //   );
-  // };
-
-  // const convertGeocode = (latitude, longitude) => {
-  //   setIsLoading(true);
-  //   setIsSuccess(false);
-  //   axios
-  //     .get(`${MAP_URL}&lat=${latitude}&lon=${longitude}`)
-  //     .then(response => {
-  //       const {city, town, county, state} = response.data.address;
-  //       setIsSuccess(true);
-  //       setUserLocation({
-  //         ...userLocation,
-  //         address: {city: city || town || county, state: state},
-  //       });
-
-  //       getIdCity({
-  //         ...userLocation,
-  //         address: {city: city || town || county, state: state},
-  //       });
-  //     })
-  //     .catch(error => console.log(error))
-  //     .finally(() => setIsLoading(false));
-  // };
-
-  // const getIdCity = user => {
-  //   setIsLoading(false);
-  //   setIsSuccess(false);
-  //   axios
-  //     .get(`${API_MY_QURAN}/sholat/kota/cari/${user.address.city}`)
-  //     .then(response => {
-  //       const {data} = response.data;
-  //       const [location] = data.filter(item =>
-  //         item.lokasi.toLowerCase().includes('kab'),
-  //       );
-  //       setUserLocation({...user, idLocation: location.id});
-  //     })
-  //     .catch(error => console.log(error))
-  //     .then(() => setIsLoading(false));
-  // };
-
-  // const getShalatTime = () => {
-  //   setIsLoading(true);
-  //   setIsSuccess(false);
-  //   axios
-  //     .get(
-  //       `${API_MY_QURAN}/sholat/jadwal/${
-  //         userLocation.idLocation
-  //       }/${date.getFullYear()}/${String(date.getMonth() + 1).padStart(
-  //         2,
-  //         '0',
-  //       )}/${date.getDate()}`,
-  //     )
-  //     .then(response => {
-  //       const {jadwal} = response.data.data;
-  //       setIsSuccess(true);
-  //       setSchedule(jadwal);
-  //     })
-  //     .catch(error => console.log(error))
-  //     .then(() => setIsLoading(false));
-  // };
-
-  // const oncomingTime = () => {
-  //   const imsak = new Date(`${schedule?.date} ${schedule?.imsak}`).getTime();
-  //   const subuh = new Date(`${schedule?.date} ${schedule?.subuh}`).getTime();
-  //   const terbit = new Date(`${schedule?.date} ${schedule?.terbit}`).getTime();
-  //   const dhuha = new Date(`${schedule?.date} ${schedule?.dhuha}`).getTime();
-  //   const dzuhur = new Date(`${schedule?.date} ${schedule?.dzuhur}`).getTime();
-  //   const ashar = new Date(`${schedule?.date} ${schedule?.ashar}`).getTime();
-  //   const maghrib = new Date(
-  //     `${schedule?.date} ${schedule?.maghrib}`,
-  //   ).getTime();
-  //   const isya = new Date(`${schedule?.date} ${schedule?.isya}`).getTime();
-
-  //   if (date.getTime() < imsak) {
-  //     setOncoming(`Imsak ${schedule?.imsak} WIB`);
-  //   } else if (date.getTime() < subuh) {
-  //     setOncoming(`Subuh ${schedule?.subuh} WIB`);
-  //   } else if (date.getTime() < terbit) {
-  //     setOncoming(`Terbit ${schedule?.terbit} WIB`);
-  //   } else if (date.getTime() < dhuha) {
-  //     setOncoming(`Dhuha ${schedule?.dhuha} WIB`);
-  //   } else if (date.getTime() < dzuhur) {
-  //     setOncoming(`Dzuhur ${schedule?.dzuhur} WIB`);
-  //   } else if (date.getTime() < ashar) {
-  //     setOncoming(`Ashar ${schedule?.ashar} WIB`);
-  //   } else if (date.getTime() < maghrib) {
-  //     setOncoming(`Maghrib ${schedule?.maghrib} WIB`);
-  //   } else if (date.getTime() < isya) {
-  //     setOncoming(`Isya ${schedule?.isya} WIB`);
-  //   }
-  // };
+  const {theme} = useContext(ThemeContext);
 
   // Get Location Permission
   useEffect(() => {
@@ -185,7 +74,12 @@ const JadwalShalat = () => {
 
   return (
     <ScrollView>
-      <View style={{flex: 1, flexDirection: 'column', backgroundColor: '#fff'}}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'column',
+          backgroundColor: theme === 'light' ? '#fff' : '#222',
+        }}>
         {/* Location Detail */}
         <View
           style={{
@@ -273,7 +167,7 @@ const JadwalShalat = () => {
               alignItems: 'center',
               position: 'relative',
               zIndex: 99,
-              backgroundColor: '#fff',
+              backgroundColor: theme === 'light' ? '#fff' : '#2F312F',
               width: '90%',
               height: 75,
               borderRadius: 8,
@@ -301,7 +195,7 @@ const JadwalShalat = () => {
                   textAlign: 'center',
                   fontSize: 18,
                   fontWeight: 600,
-                  color: '#000',
+                  color: theme === 'light' ? '#000' : '#fff',
                 }}>
                 {date.toLocaleDateString('id', {
                   day: '2-digit',
@@ -314,7 +208,7 @@ const JadwalShalat = () => {
                   textAlign: 'center',
                   fontSize: 16,
                   fontWeight: 400,
-                  color: 'grey',
+                  color: theme === 'light' ? 'grey' : '#f3f3f3',
                 }}>
                 {moment(date).locale('en').format('iDD iMMMM iYYYY')}
               </Text>
@@ -343,10 +237,24 @@ const JadwalShalat = () => {
               gap: 8,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
-              <Ionicons name="cloudy-night-outline" size={24} color={'#000'} />
-              <Text style={{fontSize: 18, color: '#000'}}>Imsak</Text>
+              <Ionicons
+                name="cloudy-night-outline"
+                size={24}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: theme === 'light' ? '#000' : '#fff',
+                }}>
+                Imsak
+              </Text>
             </View>
-            <Text style={{fontSize: 18, color: '#000'}}>
+            <Text
+              style={{
+                fontSize: 18,
+                color: theme === 'light' ? '#000' : '#fff',
+              }}>
               {isLoading
                 ? '00:00'
                 : salatSchedule
@@ -364,10 +272,24 @@ const JadwalShalat = () => {
               gap: 8,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
-              <Ionicons name="cloudy-outline" size={24} color={'#000'} />
-              <Text style={{fontSize: 18, color: '#000'}}>Subuh</Text>
+              <Ionicons
+                name="cloudy-outline"
+                size={24}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: theme === 'light' ? '#000' : '#fff',
+                }}>
+                Subuh
+              </Text>
             </View>
-            <Text style={{fontSize: 18, color: '#000'}}>
+            <Text
+              style={{
+                fontSize: 18,
+                color: theme === 'light' ? '#000' : '#fff',
+              }}>
               {isLoading
                 ? '00:00'
                 : salatSchedule
@@ -385,10 +307,24 @@ const JadwalShalat = () => {
               gap: 8,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
-              <Ionicons name="partly-sunny-outline" size={24} color={'#000'} />
-              <Text style={{fontSize: 18, color: '#000'}}>Terbit</Text>
+              <Ionicons
+                name="partly-sunny-outline"
+                size={24}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: theme === 'light' ? '#000' : '#fff',
+                }}>
+                Terbit
+              </Text>
             </View>
-            <Text style={{fontSize: 18, color: '#000'}}>
+            <Text
+              style={{
+                fontSize: 18,
+                color: theme === 'light' ? '#000' : '#fff',
+              }}>
               {isLoading
                 ? '00:00'
                 : salatSchedule
@@ -406,10 +342,24 @@ const JadwalShalat = () => {
               gap: 8,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
-              <Ionicons name="partly-sunny-outline" size={24} color={'#000'} />
-              <Text style={{fontSize: 18, color: '#000'}}>Dhuha</Text>
+              <Ionicons
+                name="partly-sunny-outline"
+                size={24}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: theme === 'light' ? '#000' : '#fff',
+                }}>
+                Dhuha
+              </Text>
             </View>
-            <Text style={{fontSize: 18, color: '#000'}}>
+            <Text
+              style={{
+                fontSize: 18,
+                color: theme === 'light' ? '#000' : '#fff',
+              }}>
               {isLoading
                 ? '00:00'
                 : salatSchedule
@@ -427,10 +377,24 @@ const JadwalShalat = () => {
               gap: 8,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
-              <Ionicons name="sunny-outline" size={24} color={'#000'} />
-              <Text style={{fontSize: 18, color: '#000'}}>Zuhur</Text>
+              <Ionicons
+                name="sunny-outline"
+                size={24}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: theme === 'light' ? '#000' : '#fff',
+                }}>
+                Zuhur
+              </Text>
             </View>
-            <Text style={{fontSize: 18, color: '#000'}}>
+            <Text
+              style={{
+                fontSize: 18,
+                color: theme === 'light' ? '#000' : '#fff',
+              }}>
               {isLoading
                 ? '00:00'
                 : salatSchedule
@@ -451,12 +415,22 @@ const JadwalShalat = () => {
               <Ionicons
                 name="partly-sunny-outline"
                 size={24}
-                color={'#000'}
+                color={theme === 'light' ? '#000' : '#fff'}
                 style={{transform: [{rotateY: '180deg'}]}}
               />
-              <Text style={{fontSize: 18, color: '#000'}}>Ashar</Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: theme === 'light' ? '#000' : '#fff',
+                }}>
+                Ashar
+              </Text>
             </View>
-            <Text style={{fontSize: 18, color: '#000'}}>
+            <Text
+              style={{
+                fontSize: 18,
+                color: theme === 'light' ? '#000' : '#fff',
+              }}>
               {isLoading
                 ? '00:00'
                 : salatSchedule
@@ -474,10 +448,24 @@ const JadwalShalat = () => {
               gap: 8,
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
-              <Ionicons name="cloudy-night-outline" size={24} color={'#000'} />
-              <Text style={{fontSize: 18, color: '#000'}}>Maghrib</Text>
+              <Ionicons
+                name="cloudy-night-outline"
+                size={24}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: theme === 'light' ? '#000' : '#fff',
+                }}>
+                Maghrib
+              </Text>
             </View>
-            <Text style={{fontSize: 18, color: '#000'}}>
+            <Text
+              style={{
+                fontSize: 18,
+                color: theme === 'light' ? '#000' : '#fff',
+              }}>
               {isLoading
                 ? '00:00'
                 : salatSchedule
@@ -498,12 +486,22 @@ const JadwalShalat = () => {
               <Ionicons
                 name="moon-outline"
                 size={24}
-                color={'#000'}
+                color={theme === 'light' ? '#000' : '#fff'}
                 style={{transform: [{rotateY: '180deg'}]}}
               />
-              <Text style={{fontSize: 18, color: '#000'}}>Isya'</Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: theme === 'light' ? '#000' : '#fff',
+                }}>
+                Isya'
+              </Text>
             </View>
-            <Text style={{fontSize: 18, color: '#000'}}>
+            <Text
+              style={{
+                fontSize: 18,
+                color: theme === 'light' ? '#000' : '#fff',
+              }}>
               {isLoading
                 ? '00:00'
                 : salatSchedule
@@ -522,13 +520,17 @@ const JadwalShalat = () => {
             alignItems: 'center',
             gap: 4,
           }}>
-          <Text style={{color: '#000', textAlign: 'center'}}>
+          <Text
+            style={{
+              color: theme === 'light' ? '#000' : '#fff',
+              textAlign: 'center',
+            }}>
             Waktu Shalat telah ditashih oleh
           </Text>
           <View style={{flexDirection: 'row', gap: 4, alignItems: 'center'}}>
             <Text
               style={{
-                color: '#000',
+                color: theme === 'light' ? '#000' : '#fff',
                 textAlign: 'center',
                 fontSize: 16,
                 fontWeight: 600,

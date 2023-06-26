@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -9,8 +9,11 @@ import {
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import ThemeContext from '../utils/context/themeContext';
 
 const Settings = () => {
+  const {toggleTheme, theme} = useContext(ThemeContext);
+
   return (
     <ScrollView>
       <StatusBar
@@ -19,34 +22,70 @@ const Settings = () => {
         barStyle="light-content"
       />
 
-      <View style={{gap: 14, paddingVertical: 14}}>
+      <View
+        style={{
+          gap: 14,
+          paddingVertical: 14,
+          backgroundColor: theme !== 'light' ? '#222' : 'grey',
+        }}>
         {/* Umum */}
-        <View style={{padding: 12, backgroundColor: '#fff', gap: 8}}>
-          <Text style={{fontSize: 14, fontWeight: 600, color: '#000'}}>
+        <View
+          style={{
+            padding: 12,
+            backgroundColor: theme === 'light' ? '#fff' : '#2F312F',
+            gap: 8,
+          }}>
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: 600,
+              color: theme === 'light' ? '#000' : '#fff',
+            }}>
             Umum
           </Text>
           <View>
             <TouchableOpacity
+              onPress={toggleTheme}
               style={{
                 paddingVertical: 14,
                 borderBottomWidth: 0.5,
+                borderBottomColor: theme === 'light' ? '#000' : '#fff',
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 10,
               }}>
-              <Ionicons name="moon-outline" size={18} color={'#000'} />
-              <Text style={{color: '#000', fontSize: 16}}>Mode Gelap</Text>
+              <Ionicons
+                name={theme === 'light' ? 'moon-outline' : 'moon'}
+                size={18}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  color: theme === 'light' ? '#000' : '#fff',
+                  fontSize: 16,
+                }}>
+                Mode Gelap
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
                 paddingVertical: 14,
                 borderBottomWidth: 0.5,
+                borderBottomColor: theme === 'light' ? '#000' : '#fff',
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 10,
               }}>
-              <Ionicons name="text" size={18} color={'#000'} />
-              <Text style={{color: '#000', fontSize: 16}}>
+              <Ionicons
+                name="text"
+                size={18}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  color: theme === 'light' ? '#000' : '#fff',
+                  fontSize: 16,
+                }}>
                 Preferensi Membaca
               </Text>
             </TouchableOpacity>
@@ -57,15 +96,35 @@ const Settings = () => {
                 alignItems: 'center',
                 gap: 10,
               }}>
-              <Ionicons name="bookmark-outline" size={18} color={'#000'} />
-              <Text style={{color: '#000', fontSize: 16}}>Daftar Bookmark</Text>
+              <Ionicons
+                name={theme === 'light' ? 'bookmark-outline' : 'bookmark'}
+                size={18}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  color: theme === 'light' ? '#000' : '#fff',
+                  fontSize: 16,
+                }}>
+                Daftar Bookmark
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
 
         {/* Ibadah */}
-        <View style={{padding: 12, backgroundColor: '#fff', gap: 8}}>
-          <Text style={{fontSize: 14, fontWeight: 600, color: '#000'}}>
+        <View
+          style={{
+            padding: 12,
+            backgroundColor: theme === 'light' ? '#fff' : '#2F312F',
+            gap: 8,
+          }}>
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: 600,
+              color: theme === 'light' ? '#000' : '#fff',
+            }}>
             Ibadah
           </Text>
           <View>
@@ -73,23 +132,43 @@ const Settings = () => {
               style={{
                 paddingVertical: 14,
                 borderBottomWidth: 0.5,
+                borderBottomColor: theme === 'light' ? '#000' : '#fff',
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 10,
               }}>
-              <Ionicons name="book-outline" size={18} color={'#000'} />
-              <Text style={{color: '#000', fontSize: 16}}>Al-Quran</Text>
+              <Ionicons
+                name={theme === 'light' ? 'book-outline' : 'book'}
+                size={18}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  color: theme === 'light' ? '#000' : '#fff',
+                  fontSize: 16,
+                }}>
+                Al-Quran
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
                 paddingVertical: 14,
                 borderBottomWidth: 0.5,
+                borderBottomColor: theme === 'light' ? '#000' : '#fff',
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 10,
               }}>
-              <Ionicons name="time-outline" size={18} color={'#000'} />
-              <Text style={{color: '#000', fontSize: 16}}>
+              <Ionicons
+                name={theme === 'light' ? 'time-outline' : 'time'}
+                size={18}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  color: theme === 'light' ? '#000' : '#fff',
+                  fontSize: 16,
+                }}>
                 Lokasi dan Pengaturan Waktu Shalat
               </Text>
             </TouchableOpacity>
@@ -97,12 +176,23 @@ const Settings = () => {
               style={{
                 paddingVertical: 14,
                 borderBottomWidth: 0.5,
+                borderBottomColor: theme === 'light' ? '#000' : '#fff',
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 10,
               }}>
-              <Ionicons name="notifications-outline" size={18} color={'#000'} />
-              <Text style={{color: '#000', fontSize: 16}}>
+              <Ionicons
+                name={
+                  theme === 'light' ? 'notifications-outline' : 'notifications'
+                }
+                size={18}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  color: theme === 'light' ? '#000' : '#fff',
+                  fontSize: 16,
+                }}>
                 Notifikasi Waktu Shalat
               </Text>
             </TouchableOpacity>
@@ -113,8 +203,16 @@ const Settings = () => {
                 alignItems: 'center',
                 gap: 10,
               }}>
-              <Ionicons name="calendar-outline" size={18} color={'#000'} />
-              <Text style={{color: '#000', fontSize: 16}}>
+              <Ionicons
+                name="calendar-outline"
+                size={18}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  color: theme === 'light' ? '#000' : '#fff',
+                  fontSize: 16,
+                }}>
                 Pengaturan Kalender Hijriah
               </Text>
             </TouchableOpacity>
@@ -122,8 +220,18 @@ const Settings = () => {
         </View>
 
         {/* Artikel */}
-        <View style={{padding: 12, backgroundColor: '#fff', gap: 8}}>
-          <Text style={{fontSize: 14, fontWeight: 600, color: '#000'}}>
+        <View
+          style={{
+            padding: 12,
+            backgroundColor: theme === 'light' ? '#fff' : '#2f312f',
+            gap: 8,
+          }}>
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: 600,
+              color: theme === 'light' ? '#000' : '#fff',
+            }}>
             Artikel
           </Text>
           <View>
@@ -131,12 +239,21 @@ const Settings = () => {
               style={{
                 paddingVertical: 14,
                 borderBottomWidth: 0.5,
+                borderBottomColor: theme === 'light' ? '#000' : '#fff',
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 10,
               }}>
-              <Ionicons name="newspaper-outline" size={18} color={'#000'} />
-              <Text style={{color: '#000', fontSize: 16}}>
+              <Ionicons
+                name="newspaper-outline"
+                size={18}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  color: theme === 'light' ? '#000' : '#fff',
+                  fontSize: 16,
+                }}>
                 Kanal Artikel Utama
               </Text>
             </TouchableOpacity>
@@ -147,8 +264,16 @@ const Settings = () => {
                 alignItems: 'center',
                 gap: 10,
               }}>
-              <Ionicons name="newspaper-outline" size={18} color={'#000'} />
-              <Text style={{color: '#000', fontSize: 16}}>
+              <Ionicons
+                name="newspaper-outline"
+                size={18}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  color: theme === 'light' ? '#000' : '#fff',
+                  fontSize: 16,
+                }}>
                 Kanal Artikel Keislaman
               </Text>
             </TouchableOpacity>
@@ -159,10 +284,15 @@ const Settings = () => {
         <View
           style={{
             padding: 12,
-            backgroundColor: '#fff',
+            backgroundColor: theme === 'light' ? '#fff' : '#2f312f',
             gap: 8,
           }}>
-          <Text style={{fontSize: 14, fontWeight: 600, color: '#000'}}>
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: 600,
+              color: theme === 'light' ? '#000' : '#fff',
+            }}>
             Tentang Aplikasi
           </Text>
           <View>
@@ -170,12 +300,21 @@ const Settings = () => {
               style={{
                 paddingVertical: 14,
                 borderBottomWidth: 0.5,
+                borderBottomColor: theme === 'light' ? '#000' : '#fff',
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 10,
               }}>
-              <Ionicons name="logo-google-playstore" size={18} color={'#000'} />
-              <Text style={{color: '#000', fontSize: 16}}>
+              <Ionicons
+                name="logo-google-playstore"
+                size={18}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  color: theme === 'light' ? '#000' : '#fff',
+                  fontSize: 16,
+                }}>
                 Periksa Pembaharuan
               </Text>
             </TouchableOpacity>
@@ -183,12 +322,21 @@ const Settings = () => {
               style={{
                 paddingVertical: 14,
                 borderBottomWidth: 0.5,
+                borderBottomColor: theme === 'light' ? '#000' : '#fff',
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 10,
               }}>
-              <Ionicons name="share-social-outline" size={18} color={'#000'} />
-              <Text style={{color: '#000', fontSize: 16}}>
+              <Ionicons
+                name="share-social-outline"
+                size={18}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  color: theme === 'light' ? '#000' : '#fff',
+                  fontSize: 16,
+                }}>
                 Bagikan Aplikasi
               </Text>
             </TouchableOpacity>
@@ -196,12 +344,21 @@ const Settings = () => {
               style={{
                 paddingVertical: 14,
                 borderBottomWidth: 0.5,
+                borderBottomColor: theme === 'light' ? '#000' : '#fff',
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 10,
               }}>
-              <Ionicons name="help-circle-outline" size={18} color={'#000'} />
-              <Text style={{color: '#000', fontSize: 16}}>
+              <Ionicons
+                name={theme === 'light' ? 'help-circle-outline' : 'help-circle'}
+                size={18}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  color: theme === 'light' ? '#000' : '#fff',
+                  fontSize: 16,
+                }}>
                 Pertanyaan Umum (FAQ)
               </Text>
             </TouchableOpacity>
@@ -212,8 +369,18 @@ const Settings = () => {
                 alignItems: 'center',
                 gap: 10,
               }}>
-              <Ionicons name="heart-circle-outline" size={18} color={'#000'} />
-              <Text style={{color: '#000', fontSize: 16}}>
+              <Ionicons
+                name={
+                  theme === 'light' ? 'heart-circle-outline' : 'heart-circle'
+                }
+                size={18}
+                color={theme === 'light' ? '#000' : '#fff'}
+              />
+              <Text
+                style={{
+                  color: theme === 'light' ? '#000' : '#fff',
+                  fontSize: 16,
+                }}>
                 Ikuti Media Sosial Kami
               </Text>
             </TouchableOpacity>
